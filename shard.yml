@@ -1,0 +1,17 @@
+name: watchdocs
+version: 0.1.0
+
+# authors:
+#   - name <email@example.com>
+
+# description: |
+#   Short description of watchdocs
+
+dependencies:
+  crinja:
+    github: straight-shoota/crinja
+  markd:
+    github: icyleaf/markd
+  front_matter:
+    github: chris-huxtable/front_matter.cr
+# license: MIT
