@@ -36,14 +36,13 @@ def watch_recursive(dir : Dir)
 end
 
 watch_recursive Dir.new(Path[Dir.current, "content"])
+watch_recursive Dir.new(Path[Dir.current, "templates"])
 
 get "/" do |env|
   env.redirect "/index.html"
 end
 
 ws "/livereload" do |socket|
-  puts "new client"
-  socket.send "Hello from Kemal!"
   SOCKETS << socket
   socket.on_close do
     SOCKETS.delete socket
