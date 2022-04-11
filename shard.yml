@@ -11,6 +11,7 @@ version: 0.1.0
 dependencies:
   crinja:
     github: straight-shoota/crinja
+    branch: yaml-json-integration
   markd:
     github: icyleaf/markd
   front_matter:

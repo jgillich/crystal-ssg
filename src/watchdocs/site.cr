@@ -1,16 +1,29 @@
 require "crinja"
 require "./import/*"
 require "./page"
+require "./site_config"
 
+@[Crinja::Attributes(expose: [base_path, config])]
 class Watchdocs::Site
+  include Crinja::Object::Auto
+
   getter pages : Array(Page)
+
   getter env : Crinja = Crinja.new
 
-  def initialize(@importer : Import::Importer = Import::FileImporter.new(Path[Dir.current]))
+  getter base_path : Path = Path[Dir.current]
+
+  getter config : Config
+
+  @importer : Import::Importer
+
+  def initialize(@importer = Import::FileImporter.new(Path[Dir.current]))
     @pages = @importer.read(Path["content/**/*.md"]).map do |f|
       Page.new f
     end
     env.loader = Crinja::Loader::FileSystemLoader.new([Path[Dir.current, "templates"].to_s, "./theme/templates"])
+
+    @config = Config.from_yaml File.read(@base_path.join("site.yaml"))
   end
 
   def render(path : Path, pages : Array(Page) = @pages)

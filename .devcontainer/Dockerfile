@@ -18,4 +18,4 @@ ENV USER=vscode
 
 RUN bash -c "sh <(curl -L https://releases.nixos.org/nix/nix-2.6.1/install) --no-daemon" \
   && . /home/vscode/.nix-profile/etc/profile.d/nix.sh \
-  && nix-env -iA -f '<nixpkgs>' watchexec
+  && nix-env -iA -f '<nixpkgs>' watchexec nodePackages.npm nodejs

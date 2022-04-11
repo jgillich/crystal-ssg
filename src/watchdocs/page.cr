@@ -1,3 +1,4 @@
+require "yaml"
 require "markd"
 require "front_matter"
 require "./text_file"
@@ -5,15 +6,16 @@ require "./front_matter"
 require "./site"
 
 module Watchdocs
-  @[Crinja::Attributes(expose: [content, title])]
+  @[Crinja::Attributes(expose: [content, html, title])]
   class Page
     include Crinja::Object::Auto
 
     getter file : TextFile
 
-    @content : String
+    getter title : String?
 
-    @[YAML::Field]
+    getter content : String
+
     getter frontmatter : FrontMatter
 
     def initialize(@file : TextFile)
@@ -28,17 +30,18 @@ module Watchdocs
       end
     end
 
-    def content
+    def html
       Markd.to_html(@content)
     end
 
     def title
-      @frontmatter.title
+      @title = @frontmatter.title
     end
 
     def render(site : Site, io : IO)
       template = site.env.get_template("_default.html")
-      io << template.render({"page" => self})
+
+      io << template.render({"page" => self, "site" => site})
     end
   end
 end

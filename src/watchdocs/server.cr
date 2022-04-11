@@ -22,6 +22,8 @@ def watch(dir : Dir)
     SOCKETS.each do |socket|
       socket.send "reload"
     end
+  rescue e
+    pp e
   end
 end
 
@@ -48,43 +50,6 @@ ws "/livereload" do |socket|
     SOCKETS.delete socket
   end
 end
-
-# class LivereloadHandler < Kemal::Handler
-#  def call(context)
-#    html = <<-HTML
-#      <script type="text/javascript">
-#      if ('WebSocket' in window) {
-#        (() => {
-#          var proto = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
-#          var ws = new WebSocket(`${proto}//${location.host}/livereload`);
-#          ws.onmessage = (msg) => {
-#            if (msg.data == "reload") {
-#              window.location.reload();
-#            }
-#          };
-#          ws.onclose = () => {
-#            console.log('close')
-#            setTimeout(() => {
-#              //window.location.reload();
-#            }, 2000);
-#          };
-#        })();
-#      }
-#      </script>
-#    HTML
-#    if context.response.headers["Content-Type"]? == "text/html"
-#      # context.response.print html
-#      call_next context
-#      if content_length = context.response.headers["Content-Length"]?
-#        # context.response.headers["Content-Length"] = (content_length.to_i + html.bytesize).to_s
-#      else
-#        # context.response.headers["Content-Length"] = html.bytesize.to_s
-#      end
-#    else
-#      call_next context
-#    end
-#  end
-# end
 
 Signal::TERM.trap do
   Kemal.stop

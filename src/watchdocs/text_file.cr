@@ -1,3 +1,5 @@
+require "yaml"
+
 module Watchdocs
   class TextFile
     getter path : Path

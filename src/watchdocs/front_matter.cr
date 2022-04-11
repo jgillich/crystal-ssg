@@ -1,16 +1,16 @@
 require "yaml"
+require "crinja"
 
 module Watchdocs
+  @[Crinja::Attributes(expose: [draft, summary, title])]
   class FrontMatter
     include YAML::Serializable
+    include Crinja::Object::Auto
 
-    @[YAML::Field]
     property draft : Bool?
 
-    @[YAML::Field]
     property summary : String?
 
-    @[YAML::Field]
     property title : String?
 
     def initialize
