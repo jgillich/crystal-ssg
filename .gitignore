@@ -1,2 +1,4 @@
-lib
-site
+/bin
+/lib
+/site
+/watchdocs

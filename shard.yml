@@ -1,5 +1,6 @@
 name: watchdocs
 version: 0.1.0
+# license: MIT
 
 # authors:
 #   - name <email@example.com>
@@ -14,4 +15,13 @@ dependencies:
     github: icyleaf/markd
   front_matter:
     github: chris-huxtable/front_matter.cr
-# license: MIT
+  kemal:
+    github: kemalcr/kemal
+  inotify:
+    github: petoem/inotify.cr
+  # https://github.com/bcardiff/crystal-fswatch/issues/4
+  #fswatch:
+  #  github: bcardiff/crystal-fswatch
+development_dependencies:
+  ameba:
+    github: crystal-ameba/ameba

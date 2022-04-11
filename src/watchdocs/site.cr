@@ -13,15 +13,18 @@ class Watchdocs::Site
     env.loader = Crinja::Loader::FileSystemLoader.new([Path[Dir.current, "templates"].to_s, "./theme/templates"])
   end
 
-  def render(path : Path)
-    @pages.map do |page|
-      p = path.join(page.file.path.relative_to("content"))
-      FileUtils.mkdir_p p.parent
-      File.open(p, mode: "wb") do |file|
+  def render(path : Path, pages : Array(Page) = @pages)
+    pages.map do |page|
+      p = page.file.path.relative_to("content")
+      if p.stem == "index"
+        p = path.join Path[p.dirname, "#{p.stem}.html"]
+      else
+        p = path.join Path[p.to_s.chomp(p.extension), "/index.html"]
+      end
+      FileUtils.mkdir_p p.dirname
+      File.open(p, mode: "w") do |file|
         page.render(self, file)
       end
     end
   end
 end
-
-pp Watchdocs::Site.new.render Path[Dir.current, "site"]

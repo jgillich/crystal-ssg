@@ -1,5 +1,6 @@
 {
   "crystal-lang.server": "/usr/local/bin/crystalline",
   "crystal-lang.hover": true,
-  "crystal-lang.completion": true
+  "crystal-lang.completion": true,
+  "editor.formatOnPaste": false
 }
