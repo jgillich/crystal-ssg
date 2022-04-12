@@ -30,18 +30,15 @@ Pages named `index` are treated as the root of a folder. `/foo/index.md` is the 
 
 ### Templates
 
-Templates are stored in the `/templates` directory. They use the Jinja2 templating syntax and are used to template Markdown pages. HTML pages may also import templates.
+Templates are stored in the `/templates` directory. They use the Jinja2 templating syntax.
 
-<!-- `_layout.html` ? -->
-
-Templates have a special sub-group called layouts. Layouts are used to render markdown pages, and they may import other templates. Layouts are denoted by a leading underscore, for example `_blog.html`.
+Templates used to render pages are called layouts. Layouts must be named `_layout.html`.
 
 The layout to use is determined by the page's file path. A page at `/pages/foo/bar/baz.md` will look for a layouts at the following locations:
 
-1. `/templates/foo/bar/_index.md`
-1. `/templates/foo/_bar.html`
-1. `/templates/foo.html`
-1. `/templates/_default.html` (the fallback for all pages)
+1. `/templates/foo/bar/_layout.md`
+1. `/templates/foo/_layout.html`
+1. `/templates/_layout.html`
 
 The template choice cannot be overriden via frontmatter.
 
@@ -66,3 +63,5 @@ themes:
 
 Theme files are overridden by local files with the same name. There is a built-in default theme based on Tailwind CSS.
 Themes may act as component libraries by prefixing their files,
+
+A site can use multiple themes. Themes that act as component libraries are encouraged to prefix their templates with the theme name.

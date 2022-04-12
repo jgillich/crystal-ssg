@@ -86,13 +86,15 @@ module Watchdocs
       end
     end
 
+    def layout
+      layouts = path.parents.map { |p| "#{p}/_layout.html" }.reverse
+      @site.env.get_template(layouts)
+    end
+
     def render(io : IO)
       case type
       when PageType::Markdown
-        template = begin
-          @site.env.get_template("_default.html")
-        end
-        io << template.render({"page" => self, "site" => @site})
+        io << layout.render({"page" => self, "site" => @site})
       when PageType::Html
         env = Crinja.new
         h = Hash(String, String).new

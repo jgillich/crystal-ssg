@@ -9,11 +9,11 @@
       <meta name="keywords" content="{{ site.config.description }}"/>
     {% endblock %}
     <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
-    {% include "partial/livereload.html" %}
+    {% include "partials/livereload.html" %}
   </head>
   <body>
-    {% include "partial/header.html" %}
+    {% include "partials/header.html" %}
     {% block content %}<div class="container mx-auto py-16 max-w-prose prose">{{ page.html|safe }}</div>{% endblock %}
-    {% include "partial/footer.html" %}
+    {% include "partials/footer.html" %}
   </body>
 </html>
