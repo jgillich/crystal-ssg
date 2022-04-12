@@ -11,7 +11,7 @@ module Watchdocs
   class Page
     include Crinja::Object::Auto
 
-    @file : TextFile
+    @path : Path
 
     getter content : String
 
@@ -19,9 +19,9 @@ module Watchdocs
 
     @site : Site
 
-    def initialize(@file : TextFile, @site)
+    def initialize(@path : Path, io : IO, @site)
       @frontmatter = FrontMatter.new
-      @content = @file.content
+      @content = io.gets_to_end
 
       if @content.lstrip.starts_with? "---"
         ::FrontMatter.parse(@content) do |fm, c|
@@ -32,7 +32,7 @@ module Watchdocs
     end
 
     def type
-      case @file.path.extension
+      case @path.extension
       when ".md", ".markdown"
         PageType::Markdown
       when ".html"
@@ -54,18 +54,18 @@ module Watchdocs
     end
 
     def title
-      @frontmatter.title || @file.path.stem.gsub("_", " ")
+      @frontmatter.title || @path.stem.gsub("_", " ")
     end
 
     def index?
-      @file.path.stem == "index"
+      @path.stem == "index"
     end
 
     def path
       if index?
-        Path[@file.path.dirname, "index.html"]
+        Path[@path.dirname, "index.html"]
       else
-        Path[@file.path.to_s.chomp(@file.path.extension), "index.html"]
+        Path[@path.to_s.chomp(@path.extension), "index.html"]
       end
     end
 
@@ -96,12 +96,12 @@ module Watchdocs
       when PageType::Html
         env = Crinja.new
         h = Hash(String, String).new
-        h[@file.path.to_s] = @content
+        h[@path.to_s] = @content
         env.loader = Crinja::Loader::ChoiceLoader.new([
           Crinja::Loader::HashLoader.new(h),
           @site.env.loader,
         ])
-        io << env.get_template(@file.path.to_s).render({"page" => self, "site" => @site})
+        io << env.get_template(@path.to_s).render({"page" => self, "site" => @site})
       else
         io << @content
       end

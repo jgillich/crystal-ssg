@@ -1,0 +1,9 @@
+content:
+  asd.html: |
+    {% foo %}
+  foo: |
+    # Foo bar
+    asdasd asd
+
+    asdas
+

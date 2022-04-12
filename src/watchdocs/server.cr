@@ -12,13 +12,13 @@ TARGET_DIR = Path[Dir.current, "site"]
 FileUtils.rm_r TARGET_DIR if Dir.exists? TARGET_DIR
 FileUtils.mkdir_p TARGET_DIR
 
-SITE.render TARGET_DIR
+SITE.build TARGET_DIR
 
 def watch(dir : Dir)
   Inotify.watch dir.path do |event|
     FileUtils.rm_r TARGET_DIR
     FileUtils.mkdir_p TARGET_DIR
-    SITE.render TARGET_DIR
+    SITE.build TARGET_DIR
     SOCKETS.each do |socket|
       socket.send "reload"
     end
