@@ -16,7 +16,8 @@
   "extensions": [
     "crystal-lang-tools.crystal-lang",
     "monosans.djlint",
-    "tombonnike.vscode-status-bar-format-toggle"
+    "tombonnike.vscode-status-bar-format-toggle",
+    "esbenp.prettier-vscode"
   ],
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.

@@ -2,12 +2,12 @@ require "inotify"
 require "kemal"
 require "./site"
 
-public_folder "./site"
-
 SITE    = Watchdocs::Site.new
 SOCKETS = [] of HTTP::WebSocket
 
-TARGET_DIR = Path[Dir.current, "site"]
+TARGET_DIR = Path[Dir.current, "build"]
+
+public_folder TARGET_DIR.to_s
 
 FileUtils.rm_r TARGET_DIR if Dir.exists? TARGET_DIR
 FileUtils.mkdir_p TARGET_DIR
@@ -37,8 +37,8 @@ def watch_recursive(dir : Dir)
   end
 end
 
-watch_recursive Dir.new(Path[Dir.current, "content"])
-watch_recursive Dir.new(Path[Dir.current, "template"])
+watch_recursive Dir.new(Path[Dir.current, "pages"])
+watch_recursive Dir.new(Path[Dir.current, "templates"])
 
 get "/" do |env|
   env.redirect "/index.html"

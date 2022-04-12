@@ -13,15 +13,15 @@ class Watchdocs::Site
 
   getter config : Config
 
-  @plugins : Array(Plugin) = [Plugin::Postcss.new] of Plugin
+  @plugins : Array(Plugin) = [Plugin::PostCSS.new] of Plugin
 
   def initialize(@base_path = Path[Dir.current])
-    env.loader = Crinja::Loader::FileSystemLoader.new([Path[@base_path, "template"].to_s])
+    env.loader = Crinja::Loader::FileSystemLoader.new([Path[@base_path, "templates"].to_s])
     @config = Config.from_yaml File.read(@base_path.join("site.yaml"))
   end
 
   def pages
-    root = Path[@base_path, "content"]
+    root = Path[@base_path, "pages"]
     Dir.glob(["**/*.md", "**/*.markdown", "**/*.html"].map { |p| Path[root, p] }, follow_symlinks: true).map do |p|
       File.open(p, "r") do |f|
         Page.new Path[p].relative_to(root), f, self
@@ -59,7 +59,7 @@ class Watchdocs::Site
   def build(in_path : Path, out_path : Path)
     File.open(in_path, "r") do |file|
       io = IO::Memory.new
-      io.write file.getb_to_end
+      IO.copy(file, io)
       @plugins.each &.static(in_path, io)
       File.write(out_path, io.to_slice)
     end
