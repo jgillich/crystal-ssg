@@ -4,14 +4,14 @@
 ARG VARIANT="buster"
 FROM mcr.microsoft.com/vscode/devcontainers/base:0-${VARIANT}
 
-RUN apt update && apt install build-essential fswatch -y \
+RUN apt update && apt install build-essential python pip -y \
+  && pip install djlint \
   && curl -fsSL https://crystal-lang.org/install.sh | bash \
+  && curl -fsSLo- https://raw.githubusercontent.com/samueleaton/sentry/master/install.cr | crystal eval && mv sentry /usr/bin \
   && wget https://github.com/elbywan/crystalline/releases/latest/download/crystalline_x86_64-unknown-linux-gnu.gz -O crystalline.gz \
   && gzip -d crystalline.gz && chmod +x crystalline && mv crystalline /usr/local/bin/crystalline \
   && mkdir -p /etc/nix \
   && bash -c "printf \"sandbox = false\" > /etc/nix/nix.conf"
-
-
 
 USER vscode
 ENV USER=vscode

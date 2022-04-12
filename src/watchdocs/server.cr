@@ -2,23 +2,23 @@ require "inotify"
 require "kemal"
 require "./site"
 
-# add_handler LivereloadHandler.new
-add_handler Kemal::StaticFileHandler.new("./site")
+public_folder "./site"
 
-# public_folder "./site"
-
-elapsed_time = Time.measure do
-  Watchdocs::Site.new.render Path[Dir.current, "site"]
-end
-puts elapsed_time
-
+SITE    = Watchdocs::Site.new
 SOCKETS = [] of HTTP::WebSocket
 
+TARGET_DIR = Path[Dir.current, "site"]
+
+FileUtils.rm_r TARGET_DIR if Dir.exists? TARGET_DIR
+FileUtils.mkdir_p TARGET_DIR
+
+SITE.render TARGET_DIR
+
 def watch(dir : Dir)
-  pp dir.path
   Inotify.watch dir.path do |event|
-    puts event
-    Watchdocs::Site.new.render Path[Dir.current, "site"]
+    FileUtils.rm_r TARGET_DIR
+    FileUtils.mkdir_p TARGET_DIR
+    SITE.render TARGET_DIR
     SOCKETS.each do |socket|
       socket.send "reload"
     end
@@ -38,7 +38,7 @@ def watch_recursive(dir : Dir)
 end
 
 watch_recursive Dir.new(Path[Dir.current, "content"])
-watch_recursive Dir.new(Path[Dir.current, "templates"])
+watch_recursive Dir.new(Path[Dir.current, "template"])
 
 get "/" do |env|
   env.redirect "/index.html"

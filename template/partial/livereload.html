@@ -1,0 +1,18 @@
+<script type="text/javascript">
+  if ("WebSocket" in window) {
+    (() => {
+      var proto = window.location.protocol === "http:" ? "ws://" : "wss://";
+      var ws = new WebSocket(`${proto}//${location.host}/livereload`);
+      ws.onmessage = (msg) => {
+        if (msg.data == "reload") {
+          window.location.reload();
+        }
+      };
+      ws.onclose = () => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      };
+    })();
+  }
+</script>

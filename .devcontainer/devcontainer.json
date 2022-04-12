@@ -15,7 +15,7 @@
   // Add the IDs of extensions you want installed when the container is created.
   "extensions": [
     "crystal-lang-tools.crystal-lang",
-    "esbenp.prettier-vscode",
+    "monosans.djlint",
     "tombonnike.vscode-status-bar-format-toggle"
   ],
 

@@ -13,6 +13,8 @@ module Watchdocs
 
     property title : String?
 
+    property date : Time?
+
     def initialize
     end
   end

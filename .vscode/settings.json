@@ -2,5 +2,18 @@
   "crystal-lang.server": "/usr/local/bin/crystalline",
   "crystal-lang.hover": true,
   "crystal-lang.completion": true,
-  "editor.formatOnPaste": false
+  "editor.formatOnPaste": false,
+  "[html]": {
+    "editor.defaultFormatter": "monosans.djlint"
+  },
+  "[django-html]": {
+    "editor.defaultFormatter": "monosans.djlint"
+  },
+  "[jinja]": {
+    "editor.defaultFormatter": "monosans.djlint"
+  },
+  "[jinja-html]": {
+    "editor.defaultFormatter": "monosans.djlint"
+  },
+  "djlint.pythonPath": "/usr/bin/python3",
 }
