@@ -30,24 +30,27 @@ class Watchdocs::Site
   end
 
   def build(out_path : Path)
-    ch = Channel(Tuple(Path | Page, Path)).new
+    channel = Channel(Tuple(Path | Page, Path)).new
     System.cpu_count.times do
       spawn do
-        f = ch.receive
-        FileUtils.mkdir_p f[1].parent
-        build(f[0], f[1])
+        while f = channel.receive?
+          FileUtils.mkdir_p f[1].parent
+          build(f[0], f[1])
+        end
       end
     end
 
     pages.map do |page|
-      ch.send({page, out_path.join(page.path)})
+      channel.send({page, out_path.join(page.path)})
     end
 
     Dir.glob(Path[@base_path, "static", "**/*"]).each do |p|
       if File.file?(p)
-        ch.send({Path[p], out_path.join(Path[p].relative_to(Path[@base_path, "static"]))})
+        channel.send({Path[p], out_path.join(Path[p].relative_to(Path[@base_path, "static"]))})
       end
     end
+  ensure
+    channel.close unless channel.nil?
   end
 
   def build(page : Page, out_path : Path)
