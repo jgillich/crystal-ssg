@@ -6,9 +6,9 @@ https://jinja.palletsprojects.com/en/3.0.x/templates/
 
 ## Why another static site generator?
 
-Mkdocs is the perfect SSG for documentation, except for one major flaw: It's slow. Large sites take >30 seconds to build.
+Mkdocs is the perfect SSG for documentation, except for one major flaw: It's slow. Large sites take >30 seconds to build. Most other SSGs also don't scale well.
 
-Hugo is very fast, but it lacks the simplicity of mkdocs because pages in Hugo must have frontmatter. I'm also not a huge fan of Hugo's templating language.
+Hugo is very fast, but it lacks the simplicity of mkdocs because pages in Hugo must have frontmatter.
 
 Plus, this is a fun project to work on. Yes, I am [not the first one](https://jamstack.org/generators/) to feel this way. =)
 
@@ -40,7 +40,7 @@ The layout to use is determined by the page's file path. A page at `/pages/foo/b
 1. `/templates/foo/_layout.html`
 1. `/templates/_layout.html`
 
-The template choice cannot be overriden via frontmatter.
+The layout choice cannot be overriden via frontmatter.
 
 ### Static
 
@@ -48,7 +48,7 @@ Static files are stored in the `/static` directory. They are copied to the outpu
 
 ### Plugins
 
-Plugins are used to extend core functionality. There are various hooks to customize the build step for pages, static files and more.
+Plugins are used to extend core functionality. Theu use various hooks to customize the build step for pages, static files and more.
 Plugins are written in Crystal and must be compiled into the binary. There are a number of built-in plugins for common use-cases such as PostCSS compilation.
 
 ### Themes

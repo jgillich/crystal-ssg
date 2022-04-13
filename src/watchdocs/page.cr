@@ -46,8 +46,8 @@ module Watchdocs
       case type
       when PageType::Markdown
         Markd.to_html(@content)
-        # when PageType::Html
-        #  @content
+      when PageType::Html
+        @content
       else
         raise "cannot convert page type #{type} to html"
       end
@@ -74,9 +74,6 @@ module Watchdocs
     end
 
     def children
-      @site.pages.select do
-        true
-      end
       @site.pages.select do |page|
         if index?
           page.path.parent.to_s.starts_with?(path.to_s.chomp("index.html"))
